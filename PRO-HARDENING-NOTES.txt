@@ -1,0 +1,22 @@
+LaunchOverlay Pro hardening pass
+
+Applied:
+- Rebuilt Pro as an add-on scaffold instead of duplicating the entire Lite plugin.
+- Defines LAUNCH_OVERLAY_PRO early so Lite/core can detect Pro before plugins_loaded.
+- Adds dependency protection for missing Lite/core plugin.
+- Avoids class redeclaration by loading Pro classes only when not already defined.
+- Adds activation/deactivation safety hooks.
+- Clears scheduled Pro cron hook on deactivation.
+- Sanitizes nonce handling in Bulk Rules save handler.
+- Adds safer unslashing/sanitizing path for posted bulk rule data.
+- Improves selected term comparison with strict integer handling.
+- Adds no_found_rows to scheduler product query.
+- Adds Pro-specific readme and hardening notes.
+
+Still requires runtime QA:
+- Activate Lite alone.
+- Activate Lite + Pro.
+- Confirm Pro unlocks expected features.
+- Confirm no duplicate admin menu/hooks.
+- Confirm scheduler and bulk rules behavior in WooCommerce.
+- Test monolith -> Lite -> Lite + Pro upgrade path.

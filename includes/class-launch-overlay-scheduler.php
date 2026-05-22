@@ -85,6 +85,7 @@ class Launch_Overlay_Scheduler {
 			'post_type'      => 'product',
 			'posts_per_page' => -1,
 			'fields'         => 'ids',
+			'no_found_rows'  => true,
 			'meta_query'     => [
 				[
 					'key'   => self::META_SCHED,

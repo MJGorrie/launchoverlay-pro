@@ -117,7 +117,7 @@ class Launch_Overlay_Bulk_Rules {
 		</div>
 
 		<script>
-		var loRuleIndex = <?php echo count( $rules ); ?>;
+		var loRuleIndex = <?php echo esc_js( absint( count( $rules ) ) ); ?>;
 		var loCategories = <?php echo wp_json_encode( array_map( fn($t) => ['id' => $t->term_id, 'name' => $t->name], is_array($categories) ? $categories : [] ) ); ?>;
 		var loTags = <?php echo wp_json_encode( array_map( fn($t) => ['id' => $t->term_id, 'name' => $t->name], is_array($tags) ? $tags : [] ) ); ?>;
 		var loPresets = <?php echo wp_json_encode( array_map( fn($k, $v) => ['key' => $k, 'label' => $v], array_keys(Launch_Overlay_Core::preset_texts()), Launch_Overlay_Core::preset_texts() ) ); ?>;
@@ -167,37 +167,37 @@ class Launch_Overlay_Bulk_Rules {
 		?>
 		<tr>
 			<td>
-				<select name="lo_rules[<?php echo $i; ?>][type]" onchange="loToggleTerms(this,<?php echo $i; ?>)">
+				<select name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][type]" onchange="loToggleTerms(this,<?php echo esc_attr( absint( $i ) ); ?>)">
 					<option value="category" <?php selected( $type, 'category' ); ?>><?php esc_html_e( 'Category', 'launch-overlay' ); ?></option>
 					<option value="tag"      <?php selected( $type, 'tag' ); ?>><?php esc_html_e( 'Tag', 'launch-overlay' ); ?></option>
 				</select>
 			</td>
 			<td>
-				<select name="lo_rules[<?php echo $i; ?>][term_ids][]" multiple id="lo-terms-<?php echo $i; ?>" style="width:200px">
+				<select name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][term_ids][]" multiple id="lo-terms-<?php echo esc_attr( absint( $i ) ); ?>" style="width:200px">
 					<?php if ( is_array( $terms ) ) : foreach ( $terms as $term ) : ?>
-						<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php echo in_array( $term->term_id, $term_ids, false ) ? 'selected' : ''; ?>>
+						<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php echo selected( in_array( (int) $term->term_id, array_map( 'absint', $term_ids ), true ), true, false ); ?>>
 							<?php echo esc_html( $term->name ); ?>
 						</option>
 					<?php endforeach; endif; ?>
 				</select>
 			</td>
 			<td>
-				<select name="lo_rules[<?php echo $i; ?>][preset_text]">
+				<select name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][preset_text]">
 					<?php foreach ( $preset_texts as $key => $label ) : ?>
 						<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $rule['preset_text'] ?? '', $key ); ?>><?php echo esc_html( $label ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</td>
 			<td>
-				<select name="lo_rules[<?php echo $i; ?>][preset_theme]">
+				<select name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][preset_theme]">
 					<?php foreach ( $themes as $key => $theme ) : ?>
 						<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $rule['preset_theme'] ?? '', $key ); ?>><?php echo esc_html( $theme['label'] ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</td>
-			<td><input type="checkbox" name="lo_rules[<?php echo $i; ?>][disable_price]" value="yes" <?php checked( $rule['disable_price'] ?? '', 'yes' ); ?>></td>
-			<td><input type="checkbox" name="lo_rules[<?php echo $i; ?>][disable_add_to_cart]" value="yes" <?php checked( $rule['disable_add_to_cart'] ?? 'yes', 'yes' ); ?>></td>
-			<td><input type="number" name="lo_rules[<?php echo $i; ?>][priority]" value="<?php echo esc_attr( $rule['priority'] ?? 10 ); ?>" style="width:60px"></td>
+			<td><input type="checkbox" name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][disable_price]" value="yes" <?php checked( $rule['disable_price'] ?? '', 'yes' ); ?>></td>
+			<td><input type="checkbox" name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][disable_add_to_cart]" value="yes" <?php checked( $rule['disable_add_to_cart'] ?? 'yes', 'yes' ); ?>></td>
+			<td><input type="number" name="lo_rules[<?php echo esc_attr( absint( $i ) ); ?>][priority]" value="<?php echo esc_attr( $rule['priority'] ?? 10 ); ?>" style="width:60px"></td>
 			<td><button type="button" class="button-link-delete" onclick="this.closest('tr').remove()">&#x2715;</button></td>
 		</tr>
 		<?php
@@ -209,14 +209,14 @@ class Launch_Overlay_Bulk_Rules {
 		if ( ! isset( $_POST['lo_bulk_nonce'] ) ) {
 			return;
 		}
-		if ( ! wp_verify_nonce( $_POST['lo_bulk_nonce'], 'launch_overlay_bulk_rules' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['lo_bulk_nonce'] ) ), 'launch_overlay_bulk_rules' ) ) {
 			return;
 		}
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return;
 		}
 
-		$raw_rules = $_POST['lo_rules'] ?? [];
+		$raw_rules = isset( $_POST['lo_rules'] ) ? wp_unslash( $_POST['lo_rules'] ) : [];
 		$clean     = [];
 
 		$valid_texts  = array_keys( Launch_Overlay_Core::preset_texts() );
