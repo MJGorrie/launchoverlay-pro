@@ -1,0 +1,242 @@
+/**
+ * LaunchOverlay – Frontend Stylesheet v1.1.0
+ * GTG – Gorrie Technology Group, Inc.
+ *
+ * Lightweight, no frameworks. CSS custom properties injected via PHP.
+ *   --lo-bg      : banner background colour
+ *   --lo-color   : banner text colour
+ *   --lo-opacity : banner opacity (0–1)
+ *   --lo-rotation: label rotation in degrees (Pro)
+ */
+
+/* ── Wrapper ──────────────────────────────────────────────────────────────── */
+.lo-wrap {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	width: 100%;
+	line-height: 0; /* kill whitespace gap under img */
+}
+
+.lo-wrap img {
+	display: block;
+	width: 100%;
+	height: auto;
+	line-height: 1;
+}
+
+/* ── Base overlay ─────────────────────────────────────────────────────────── */
+.lo-overlay {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+	z-index: 10;
+	background-color: var(--lo-bg, #1a1a1a);
+	opacity: var(--lo-opacity, 0.85);
+	transition: opacity 0.2s ease;
+}
+
+/* ── Corner positions (ribbon-tab style) ─────────────────────────────────── */
+
+/* TOP-RIGHT (Lite default) */
+.lo-pos-top-right {
+	top: 0;
+	right: 0;
+	width: auto;
+	min-width: 0;
+	padding: 6px 14px 6px 10px;
+	border-radius: 0 0 0 6px;
+}
+
+/* TOP-LEFT */
+.lo-pos-top-left {
+	top: 0;
+	left: 0;
+	padding: 6px 10px 6px 14px;
+	border-radius: 0 0 6px 0;
+}
+
+/* BOTTOM-RIGHT */
+.lo-pos-bottom-right {
+	bottom: 0;
+	right: 0;
+	padding: 6px 14px 6px 10px;
+	border-radius: 6px 0 0 0;
+}
+
+/* BOTTOM-LEFT */
+.lo-pos-bottom-left {
+	bottom: 0;
+	left: 0;
+	padding: 6px 10px 6px 14px;
+	border-radius: 0 6px 0 0;
+}
+
+/* ── Band positions (full-width) ─────────────────────────────────────────── */
+
+/* CENTER BAND */
+.lo-pos-center {
+	top: 50%;
+	left: 0;
+	right: 0;
+	transform: translateY(-50%);
+	height: 28%;
+	min-height: 44px;
+}
+
+/* TOP BAND */
+.lo-pos-top {
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 22%;
+	min-height: 38px;
+}
+
+/* BOTTOM BAND */
+.lo-pos-bottom {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 22%;
+	min-height: 38px;
+}
+
+/* ── Label text ──────────────────────────────────────────────────────────── */
+.lo-label {
+	display: block;
+	color: var(--lo-color, #ffffff);
+	font-size: clamp(0.65rem, 2vw, 0.9rem);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	text-align: center;
+	white-space: nowrap;
+	line-height: 1.2;
+	/* opacity must stay 1 – the parent handles transparency */
+	opacity: 1;
+	position: relative;
+	z-index: 1;
+	/* Pro rotation var (defaults to 0 in Lite) */
+	transform: rotate( var(--lo-rotation, 0deg) );
+}
+
+/* Corner positions: slightly larger text fits the tab */
+.lo-pos-top-right  .lo-label,
+.lo-pos-top-left   .lo-label,
+.lo-pos-bottom-right .lo-label,
+.lo-pos-bottom-left  .lo-label {
+	font-size: clamp(0.6rem, 1.8vw, 0.82rem);
+	letter-spacing: 0.06em;
+}
+
+/* ── Hover dimming ────────────────────────────────────────────────────────── */
+.lo-wrap:hover .lo-overlay {
+	opacity: calc( var(--lo-opacity, 0.85) * 0.88 );
+}
+
+/* ── CTA replacement button ──────────────────────────────────────────────── */
+.lo-cta.button.disabled,
+.lo-cta.button[aria-disabled="true"] {
+	cursor: not-allowed;
+	opacity: 0.75;
+	pointer-events: none;
+}
+
+.lo-single-cta {
+	margin: 0.75em 0;
+}
+
+/* ── Accessibility ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	.lo-overlay { transition: none; }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+	.lo-label {
+		font-size: 0.62rem;
+		letter-spacing: 0.05em;
+	}
+	.lo-pos-top-right,
+	.lo-pos-top-left,
+	.lo-pos-bottom-right,
+	.lo-pos-bottom-left {
+		padding: 4px 8px;
+	}
+}
+
+/* ── Single product page – JS-injected overlay ───────────────────────────── */
+/* The gallery wrapper needs relative positioning (set via JS too, as backup) */
+.woocommerce-product-gallery__image,
+.woocommerce-product-gallery figure,
+.product-images figure,
+.product .images {
+	position: relative;
+	overflow: hidden;
+}
+
+/* When overlay is injected directly into gallery wrapper (no .lo-wrap parent) */
+.woocommerce-product-gallery__image > .lo-overlay,
+.woocommerce-product-gallery figure > .lo-overlay,
+.woocommerce-product-gallery > .lo-overlay,
+.product .images > .lo-overlay,
+.product-images figure > .lo-overlay {
+	position: absolute;
+	z-index: 99;
+}
+
+/* ── Diagonal Ribbon Style (Free) ────────────────────────────────────────── */
+/* Matches the classic corner ribbon look — like Mark's hoodie example */
+.lo-ribbon {
+	width: 130px !important;
+	height: 130px !important;
+	top: 0 !important;
+	right: 0 !important;
+	left: auto !important;
+	bottom: auto !important;
+	padding: 0 !important;
+	transform: none !important;
+	overflow: hidden !important;
+	background: transparent !important;
+	opacity: 1 !important;
+	pointer-events: none;
+}
+
+.lo-ribbon .lo-label {
+	position: absolute;
+	top: 28px;
+	right: -32px;
+	width: 150px;
+	text-align: center;
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: .08em;
+	text-transform: uppercase;
+	padding: 7px 0;
+	transform: rotate(45deg);
+	background: var(--lo-bg, #cc0000);
+	color: var(--lo-color, #fff);
+	opacity: 1;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* ── Single product page overlay ─────────────────────────────────────────── */
+.woocommerce-product-gallery__image,
+.woocommerce-product-gallery figure,
+.product-images figure,
+.product .images {
+	position: relative;
+	overflow: hidden;
+}
+
+.woocommerce-product-gallery__image > .lo-overlay,
+.woocommerce-product-gallery figure > .lo-overlay,
+.woocommerce-product-gallery > .lo-overlay,
+.product .images > .lo-overlay,
+.product-images figure > .lo-overlay {
+	position: absolute;
+	z-index: 99;
+}
