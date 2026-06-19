@@ -1,0 +1,13 @@
+/* =============================================================================
+   LaunchOverlay Pro — Admin CSS additions
+   All base styles are in the Lite plugin's lo-admin.css.
+   This file only adds Pro-specific overrides.
+   ============================================================================= */
+
+/* Pro title badge in header */
+.lo-pro-title-badge {
+	display: inline-block;
+	background: linear-gradient(135deg, #f76707, #e25e00);
+	color: #fff; font-size: 13px; font-weight: 800; letter-spacing: .06em;
+	padding: 2px 10px 3px; border-radius: 100px; vertical-align: middle; margin-left: 4px;
+}

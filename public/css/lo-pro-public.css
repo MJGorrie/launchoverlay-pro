@@ -1,0 +1,129 @@
+/* =============================================================================
+   LaunchOverlay Pro — Public CSS  v1.0.1
+   Loaded AFTER launchoverlay.css (Lite). Adds the Diagonal Ribbon style.
+   ============================================================================= */
+
+/* ════════════════════════════════════════════════════════════════════════════════
+   STYLE: DIAGONAL RIBBON
+   A fabric-style banner rotated 45° draping across the corner of the image.
+   Requires .lo-img-wrap to have overflow:hidden (set by Lite CSS).
+   ════════════════════════════════════════════════════════════════════════════════ */
+.lo-style-ribbon {
+	/* Reset any banner/badge defaults */
+	border-radius: 0 !important;
+	gap: 0 !important;
+	padding: 0 !important;
+
+	/* Ribbon dimensions */
+	width: 160px !important;
+	height: auto !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 8px 0 !important;
+
+	font-size: 10px !important;
+	letter-spacing: .07em !important;
+
+	/* Depth */
+	box-shadow:
+		0 3px 12px rgba(0,0,0,.28),
+		inset 0  1px 0 rgba(255,255,255,.22),
+		inset 0 -1px 0 rgba(0,0,0,.12) !important;
+
+	/* Gloss */
+	background-image: linear-gradient(
+		180deg,
+		rgba(255,255,255,.18) 0%,
+		rgba(0,0,0,.06) 100%
+	) !important;
+
+	border-top:    1px solid rgba(255,255,255,.15) !important;
+	border-bottom: 1px solid rgba(0,0,0,.12) !important;
+	border-left:   none !important;
+	border-right:  none !important;
+}
+
+/* No pulsing dot on ribbons */
+.lo-style-ribbon::before {
+	display: none !important;
+}
+
+/* ── Corner positions ────────────────────────────────────────────────────────── */
+
+/* Top-left: ribbon enters from the top-left corner, diagonal ↘ */
+.lo-style-ribbon.lo-pos-top-left {
+	top: 26px !important;
+	left: -40px !important;
+	right: auto !important;
+	bottom: auto !important;
+	transform: rotate(-45deg) !important;
+	transform-origin: center center !important;
+}
+
+/* Top-right: ribbon enters from the top-right corner, diagonal ↙ */
+.lo-style-ribbon.lo-pos-top-right {
+	top: 26px !important;
+	right: -40px !important;
+	left: auto !important;
+	bottom: auto !important;
+	transform: rotate(45deg) !important;
+	transform-origin: center center !important;
+}
+
+/* Bottom-left */
+.lo-style-ribbon.lo-pos-bottom-left {
+	bottom: 26px !important;
+	left: -40px !important;
+	top: auto !important;
+	right: auto !important;
+	transform: rotate(45deg) !important;
+	transform-origin: center center !important;
+}
+
+/* Bottom-right */
+.lo-style-ribbon.lo-pos-bottom-right {
+	bottom: 26px !important;
+	right: -40px !important;
+	top: auto !important;
+	left: auto !important;
+	transform: rotate(-45deg) !important;
+	transform-origin: center center !important;
+}
+
+/* Fallback for center / top-center / bottom-center */
+.lo-style-ribbon.lo-pos-center,
+.lo-style-ribbon.lo-pos-top-center,
+.lo-style-ribbon.lo-pos-bottom-center {
+	top: 50% !important;
+	left: 50% !important;
+	right: auto !important;
+	bottom: auto !important;
+	transform: translate(-50%, -50%) rotate(-35deg) !important;
+}
+
+/* ── Single product gallery — larger ribbon ──────────────────────────────────── */
+.lo-style-ribbon.lo-single {
+	width: 200px !important;
+	font-size: 12px !important;
+	padding: 10px 0 !important;
+}
+
+.lo-style-ribbon.lo-single.lo-pos-top-left  { top: 36px !important; left: -52px !important; }
+.lo-style-ribbon.lo-single.lo-pos-top-right { top: 36px !important; right: -52px !important; }
+.lo-style-ribbon.lo-single.lo-pos-bottom-left  { bottom: 36px !important; left: -52px !important; }
+.lo-style-ribbon.lo-single.lo-pos-bottom-right { bottom: 36px !important; right: -52px !important; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+	.lo-style-ribbon        { width: 120px !important; font-size: 9px !important; padding: 6px 0 !important; }
+	.lo-style-ribbon.lo-pos-top-left    { top: 18px !important; left: -30px !important; }
+	.lo-style-ribbon.lo-pos-top-right   { top: 18px !important; right: -30px !important; }
+	.lo-style-ribbon.lo-pos-bottom-left { bottom: 18px !important; left: -30px !important; }
+	.lo-style-ribbon.lo-pos-bottom-right{ bottom: 18px !important; right: -30px !important; }
+}
+
+/* ── Accessibility ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	.lo-style-ribbon { transition: none !important; }
+}
